@@ -1,0 +1,18 @@
+{
+  "name": "math-trainer-grade-5",
+  "version": "1.0.0",
+  "description": "Интерактивный сайт-тренажёр по математике для 5 класса (для электронных досок, ПК и планшетов)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "math",
+    "education",
+    "whiteboard",
+    "grade5"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}

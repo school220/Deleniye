@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Интерактивный сайт-тренажёр по математике для 5 класса с полем для вычислений для электронных досок, компьютеров и планшетов.">
+  <title>Тренажёр по математике • 5 класс</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Главный контейнер приложения -->
+  <div id="app" class="app-container">
+
+    <!-- Верхняя панель (Header) -->
+    <header class="top-nav" role="banner">
+      <div class="nav-left">
+        <button id="btn-home" class="nav-btn icon-btn" title="На главный экран" aria-label="Вернуться на главный экран">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span class="nav-btn-text">В меню</span>
+        </button>
+        <div class="logo-group">
+          <span class="logo-badge">5 КЛАСС</span>
+          <h1 class="logo-title">Математика</h1>
+        </div>
+      </div>
+
+      <!-- Центральный индикатор прогресса (виден во время тренировки) -->
+      <div id="nav-progress-group" class="nav-center hidden">
+        <div class="progress-info">
+          <span id="nav-topic-name" class="topic-pill">Все темы</span>
+          <span id="nav-step-text" class="step-counter">Задание 1 из 10</span>
+        </div>
+        <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+          <div id="nav-progress-fill" class="progress-bar-fill" style="width: 10%;"></div>
+        </div>
+      </div>
+
+      <!-- Правые кнопки управления: звук, полный экран -->
+      <div class="nav-right">
+        <button id="btn-toggle-sound" class="nav-btn icon-btn" title="Включить/выключить звук" aria-label="Включить или выключить звук">
+          <span id="sound-icon" class="btn-icon">🔊</span>
+          <span id="sound-label" class="nav-btn-text">Звук</span>
+        </button>
+        <button id="btn-fullscreen" class="nav-btn icon-btn" title="На весь экран (режим электронной доски)" aria-label="Развернуть на весь экран">
+          <span class="btn-icon">⛶</span>
+          <span class="nav-btn-text">Экран</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ОСНОВНАЯ ОБЛАСТЬ (ЭКРАНЫ) -->
+    <main class="main-content" role="main">
+
+      <!-- ================= 1. СТАРТОВЫЙ ЭКРАН ================= -->
+      <section id="screen-start" class="screen active" aria-labelledby="start-heading">
+        <div class="start-card">
+          <div class="start-hero">
+            <div class="hero-icon-badge">📐 ✏️ 💡</div>
+            <h2 id="start-heading" class="hero-title">Математический тренажёр</h2>
+            <p class="hero-subtitle">
+              Удобно для интерактивной доски, компьютера и планшета: решайте прямо на экране стилусом или пальцем и выбирайте ответ!
+            </p>
+          </div>
+
+          <!-- Выбор темы -->
+          <div class="selection-section">
+            <h3 class="section-label">Выберите тему занятия:</h3>
+            <div class="topics-grid" role="radiogroup" aria-label="Тема занятия">
+              <button type="button" class="topic-card active" data-topic="all" role="radio" aria-checked="true">
+                <span class="topic-icon">🌟</span>
+                <span class="topic-title">Все темы</span>
+                <span class="topic-desc">Арифметика, дроби, геометрия и задачи</span>
+              </button>
+              <button type="button" class="topic-card" data-topic="arithmetic" role="radio" aria-checked="false">
+                <span class="topic-icon">🔢</span>
+                <span class="topic-title">Арифметика</span>
+                <span class="topic-desc">Порядок действий, остатки, степени и уравнения</span>
+              </button>
+              <button type="button" class="topic-card" data-topic="fractions" role="radio" aria-checked="false">
+                <span class="topic-icon">🍰</span>
+                <span class="topic-title">Дроби</span>
+                <span class="topic-desc">Обыкновенные дроби: деление, сложение и вычитание</span>
+              </button>
+              <button type="button" class="topic-card" data-topic="geometry" role="radio" aria-checked="false">
+                <span class="topic-icon">📏</span>
+                <span class="topic-title">Геометрия</span>
+                <span class="topic-desc">Периметр, площадь, объём и единицы счёта</span>
+              </button>
+              <button type="button" class="topic-card" data-topic="word_problems" role="radio" aria-checked="false">
+                <span class="topic-icon">🚴</span>
+                <span class="topic-title">Задачи</span>
+                <span class="topic-desc">Задачи на движение, покупки и нахождение части</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Выбор количества заданий -->
+          <div class="selection-section">
+            <h3 class="section-label">Количество заданий:</h3>
+            <div class="count-selector" role="radiogroup" aria-label="Количество заданий">
+              <button type="button" class="count-pill" data-count="5" role="radio" aria-checked="false">5 заданий</button>
+              <button type="button" class="count-pill active" data-count="10" role="radio" aria-checked="true">10 заданий</button>
+              <button type="button" class="count-pill" data-count="15" role="radio" aria-checked="false">15 заданий</button>
+              <button type="button" class="count-pill" data-count="20" role="radio" aria-checked="false">20 заданий</button>
+              <button type="button" class="count-pill" data-count="30" role="radio" aria-checked="false">30 заданий</button>
+              <button type="button" class="count-pill" data-count="60" role="radio" aria-checked="false">Все доступные</button>
+            </div>
+          </div>
+
+          <!-- Большая кнопка запуска -->
+          <div class="start-action-row">
+            <button id="btn-start-quiz" class="btn btn-primary btn-large btn-start" type="button">
+              <span class="btn-text">Начать занятие</span>
+              <span class="btn-arrow">→</span>
+            </button>
+          </div>
+
+          <!-- Быстрые подсказки -->
+          <div class="start-tips">
+            <div class="tip-item">
+              <span class="tip-icon">✍️</span>
+              <span><strong>Черновик на экране:</strong> пишите стилусом, пальцем или мышью в поле решений</span>
+            </div>
+            <div class="tip-item">
+              <span class="tip-icon">⌨️</span>
+              <span><strong>Клавиатура:</strong> клавиши 1, 2, 3, 4 для ответа, Enter для перехода</span>
+            </div>
+            <div class="tip-item">
+              <span class="tip-icon">🔒</span>
+              <span><strong>Конфиденциальность:</strong> без регистрации, личных данных и таблиц лидеров</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. ЭКРАН ЗАНЯТИЯ (ТРЕНИРОВКА) ================= -->
+      <section id="screen-quiz" class="screen" aria-labelledby="question-text">
+        <div class="quiz-layout">
+
+          <!-- ЛЕВАЯ КОЛОНКА: ЗАДАНИЕ, ВАРИАНТЫ И РЕЗУЛЬТАТ -->
+          <div class="quiz-left-panel">
+            
+            <!-- Карточка задания -->
+            <div class="problem-card">
+              <div class="problem-meta">
+                <span id="quiz-topic-badge" class="badge-topic">Арифметика</span>
+                <span id="quiz-step-badge" class="badge-step">Вопрос 1 из 10</span>
+              </div>
+
+              <div class="problem-content">
+                <h2 id="question-text" class="question-text">Вычислите значение выражения:</h2>
+              </div>
+            </div>
+
+            <!-- Блок обратной связи (появляется после ответа) -->
+            <div id="feedback-banner" class="feedback-banner hidden" role="alert" aria-live="polite">
+              <div class="feedback-content">
+                <div class="feedback-header">
+                  <span id="feedback-icon" class="feedback-icon">✓</span>
+                  <div class="feedback-titles">
+                    <span id="feedback-status" class="feedback-status">Правильно!</span>
+                    <span id="feedback-subtext" class="feedback-subtext">Отличный ответ!</span>
+                  </div>
+                </div>
+                <!-- Пояснение и правильный ответ (при ошибке) -->
+                <div id="feedback-explanation" class="feedback-explanation hidden"></div>
+              </div>
+
+              <!-- Кнопка перехода к следующему вопросу -->
+              <div class="feedback-action">
+                <button id="btn-next-question" class="btn btn-action" type="button">
+                  <span id="btn-next-text">Дальше</span>
+                  <span class="btn-arrow">→</span>
+                  <span id="btn-next-timer" class="btn-timer-indicator"></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Сетка вариантов ответа (2 × 2) -->
+            <div class="options-container">
+              <h3 class="visually-hidden">Варианты ответа</h3>
+              <div id="options-grid" class="options-grid" role="group" aria-label="Варианты ответов">
+                <!-- 4 кнопки ответов генерируются динамически -->
+                <button class="option-btn" data-index="0" type="button">
+                  <span class="option-letter">А</span>
+                  <span class="option-value">120</span>
+                </button>
+                <button class="option-btn" data-index="1" type="button">
+                  <span class="option-letter">Б</span>
+                  <span class="option-value">150</span>
+                </button>
+                <button class="option-btn" data-index="2" type="button">
+                  <span class="option-letter">В</span>
+                  <span class="option-value">180</span>
+                </button>
+                <button class="option-btn" data-index="3" type="button">
+                  <span class="option-letter">Г</span>
+                  <span class="option-value">240</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ПРАВАЯ КОЛОНКА: ПОЛЕ ДЛЯ ВЫЧИСЛЕНИЙ (ХОЛСТ) -->
+          <div class="quiz-right-panel">
+            <div class="board-card">
+              
+              <!-- Панель инструментов черновика -->
+              <div class="board-toolbar" role="toolbar" aria-label="Инструменты рисования на доске">
+                <div class="toolbar-title-group">
+                  <span class="board-title">Поле для вычислений</span>
+                </div>
+
+                <div class="toolbar-actions">
+                  <!-- Выбор инструмента: Карандаш / Ластик -->
+                  <div class="tool-group" role="radiogroup" aria-label="Инструмент">
+                    <button id="tool-pen" class="tool-btn active" data-tool="pen" title="Маркер / Ручка (Клавиша P)" aria-label="Маркер" aria-checked="true">
+                      <span class="tool-icon">✏️</span>
+                      <span class="tool-label">Перо</span>
+                    </button>
+                    <button id="tool-eraser" class="tool-btn" data-tool="eraser" title="Ластик (Клавиша E)" aria-label="Ластик" aria-checked="false">
+                      <span class="tool-icon">🧹</span>
+                      <span class="tool-label">Ластик</span>
+                    </button>
+                  </div>
+
+                  <!-- Палитра цветов -->
+                  <div class="color-palette" role="radiogroup" aria-label="Цвет чернил">
+                    <button class="color-dot active" data-color="#1d4ed8" style="--dot-color: #1d4ed8;" title="Синий" aria-label="Синий цвет"></button>
+                    <button class="color-dot" data-color="#0f172a" style="--dot-color: #0f172a;" title="Чёрный" aria-label="Чёрный цвет"></button>
+                    <button class="color-dot" data-color="#16a34a" style="--dot-color: #16a34a;" title="Зелёный" aria-label="Зелёный цвет"></button>
+                    <button class="color-dot" data-color="#ea580c" style="--dot-color: #ea580c;" title="Оранжевый" aria-label="Оранжевый цвет"></button>
+                  </div>
+
+                  <!-- Толщина линии -->
+                  <div class="thickness-group" role="radiogroup" aria-label="Толщина пера">
+                    <button class="size-btn" data-size="3" title="Тонкая линия" aria-label="Тонкая линия">
+                      <span class="size-preview" style="width: 4px; height: 4px;"></span>
+                    </button>
+                    <button class="size-btn active" data-size="6" title="Обычная линия" aria-label="Обычная линия">
+                      <span class="size-preview" style="width: 8px; height: 8px;"></span>
+                    </button>
+                    <button class="size-btn" data-size="12" title="Широкая линия (для доски)" aria-label="Широкая линия">
+                      <span class="size-preview" style="width: 14px; height: 14px;"></span>
+                    </button>
+                  </div>
+
+                  <!-- Кнопки Отменить и Очистить -->
+                  <div class="board-action-group">
+                    <button id="btn-undo" class="board-ctrl-btn" title="Отменить последнее действие (Z)" aria-label="Отменить последнее действие">
+                      <span class="btn-symbol">↶</span>
+                      <span class="btn-caption">Отменить</span>
+                    </button>
+                    <button id="btn-clear-board" class="board-ctrl-btn" title="Очистить всё поле (C)" aria-label="Очистить всё поле">
+                      <span class="btn-symbol">🗑️</span>
+                      <span class="btn-caption">Очистить</span>
+                    </button>
+                    <button id="btn-toggle-grid" class="board-ctrl-btn active" title="Включить / отключить клетку" aria-label="Сетка в клетку">
+                      <span class="btn-symbol">▦</span>
+                      <span class="btn-caption">Клетка</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Холст для рукописного ввода -->
+              <div id="whiteboard-wrapper" class="whiteboard-wrapper grid-enabled">
+                <canvas id="whiteboard-canvas"></canvas>
+                <div class="whiteboard-watermark">Черновик для вычислений</div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= 3. ЭКРАН ИТОГОВ (РЕЗУЛЬТАТЫ) ================= -->
+      <section id="screen-results" class="screen" aria-labelledby="results-heading">
+        <div class="results-card">
+          <div class="results-header">
+            <div id="results-badge-icon" class="results-icon">🏆</div>
+            <h2 id="results-heading" class="results-title">Занятие завершено!</h2>
+            <p id="results-message" class="results-message">Великолепная работа! Все примеры решены правильно.</p>
+          </div>
+
+          <!-- Сводные карточки показателей -->
+          <div class="score-grid">
+            <div class="score-card score-total">
+              <span class="score-label">Всего заданий</span>
+              <span id="stat-total" class="score-number">10</span>
+            </div>
+            <div class="score-card score-correct">
+              <span class="score-label">Верно отвечено</span>
+              <span id="stat-correct" class="score-number">9</span>
+            </div>
+            <div class="score-card score-errors">
+              <span class="score-label">Ошибок</span>
+              <span id="stat-errors" class="score-number">1</span>
+            </div>
+            <div class="score-card score-percent">
+              <span class="score-label">Точность</span>
+              <span id="stat-percent" class="score-number">90%</span>
+            </div>
+          </div>
+
+          <!-- Список ответов с разбором -->
+          <div class="review-section">
+            <h3 class="review-title">Обзор выполненных заданий:</h3>
+            <div id="review-list" class="review-list">
+              <!-- Заполняется динамически -->
+            </div>
+          </div>
+
+          <!-- Кнопки завершения -->
+          <div class="results-actions">
+            <button id="btn-restart-same" class="btn btn-primary btn-large" type="button">
+              <span>Пройти ещё раз</span>
+              <span class="btn-arrow">↺</span>
+            </button>
+            <button id="btn-choose-topic" class="btn btn-secondary btn-large" type="button">
+              <span>Выбрать другую тему</span>
+              <span class="btn-arrow">☰</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Подвал -->
+    <footer class="app-footer">
+      <span>Математика 5 класс • Для интерактивных досок и электронного обучения</span>
+    </footer>
+
+  </div>
+
+  <!-- Подключение скриптов без внешних зависимостей -->
+  <script src="js/sound.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/whiteboard.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
